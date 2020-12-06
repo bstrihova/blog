@@ -1,19 +1,25 @@
 import React, {useState} from 'react'
-// import { useGlobalContext } from "./context";
 import { useHistory } from "react-router-dom";
 import MEDitor from '@uiw/react-md-editor';
+import ImageUpload from "./ImageUpload";
 
 function AdminArticleCreate() {
 
     const history = useHistory();
-    // const { user } = useGlobalContext();
 
-    const [{title, imageId, perex}, setValues] = useState({
+    // redirect if you are not authenticated
+    if (!localStorage.getItem("access_token")) {
+        history.push("/login");
+    }
+
+    const [{title, perex}, setValues] = useState({
         title: "",
-        // just a uuid for the image, since I don't know how to upload images but each article needs uuid in imageId
-        imageId: "3cad68aa-1397-4787-b99e-226e552ddbb2",
+        // imageId: "",
         perex: ""
     })
+
+    const [content, setContent] = useState(`**Hello world!!!**`);
+    const [imageId, setImageId] = useState("");
     
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -36,13 +42,12 @@ function AdminArticleCreate() {
         // post is created
         if (response.status === 200) {
             history.push(`/articles/${data.articleId}`)
-            
         }
         
     }
 
     const handleChange = (event) => {
-        const allowed_names = ["title", "imageId", "perex"],
+        const allowed_names = ["title", "perex"],
             name  = event.target.name,
             value = event.target.value
  
@@ -54,43 +59,34 @@ function AdminArticleCreate() {
             });
         }
     }
-
-    const [content, setContent] = React.useState(`**Hello world!!!**`);
-
-    if (!localStorage.getItem("access_token")) {
-        history.push("/login");
-    }
-
+ 
     return (
-        <>
         <form onSubmit={handleSubmit}>
+
             <div className="d-flex justify-content-start align-items-center mb-3">
                 <p className="h1 mr-4 mb-0">Create new article </p>
                 <button type="submit" className="btn btn-primary" >Publish Article</button>
             </div>
+
             <div className="form-group">
                 <label htmlFor="title">Article Title</label>
                 <input type="text" className="form-control" placeholder="A creative title of your article" name="title" value={title} onChange={handleChange}/>
             </div>
-            {/* a hidden input for images*/}
-            <div className="form-group d-none">
-                <label htmlFor="imageId">URL of featured image</label>
-                <input type="text" name="imageId" value={imageId} onChange={()=>{}}/>
-            </div>
+
+            <ImageUpload setImageId={setImageId}/>
+
             <div className="form-group">
                 <label htmlFor="perex">Perex</label>
-                <input type="text" className="form-control"  placeholder="Summarize content of your article" name="perex" value={perex} onChange={handleChange}/>
+                <input type="text" className="form-control" placeholder="Summarize content of your article" name="perex" value={perex} onChange={handleChange}/>
             </div>
+
             <div className="form-group">
                 <label htmlFor="content">Content</label>
                 {/* <textarea className="form-control" rows="10" name="content" placeholder="Supports markdown. Yay!" value={content} onChange={handleChange}></textarea> */}
                 <MEDitor height={200} value={content} name="content" onChange={setContent} />
             </div>
-            {/* {content} */}
             <a href="https://commonmark.org/help/" target="_blank" rel="noreferrer">Learn Markdown here</a>
-
         </form>
-        </>
     )
 }
 

@@ -1,15 +1,19 @@
 import React, {useEffect, useState} from 'react'
-// import { useGlobalContext } from "./context";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import MEDitor from '@uiw/react-md-editor';
+import ImageUpload from "./ImageUpload";
 
 function AdminArticleEdit() {
 
     let { id } = useParams();
 
     const history = useHistory();
-    // const { user } = useGlobalContext();
+
+     // redirect if you are not authenticated
+    if (!localStorage.getItem("access_token")) {
+        history.push("/login");
+    }
 
     useEffect(() => {
         const loadArticle = async () => {
@@ -22,22 +26,25 @@ function AdminArticleEdit() {
             const data = await response.json();
     
             // preloading the form with data from the article
-            data && setValues({title: data.title, imageId: data.imageId, perex: data.perex});
+            data && setValues({title: data.title, perex: data.perex});
             data && setContent(data.content);
+            data && setImageId(data.imageId);
         };
         loadArticle();
     }, [id]);
 
-    const [{title, imageId, perex}, setValues] = useState({
+    const [{title, perex}, setValues] = useState({
         title: "",
-        imageId: "",
         perex: ""
     })
 
     const [content, setContent] = React.useState(`**Hello world!!!**`);
+    const [imageId, setImageId] = useState("");
+
+    console.log("title:", title, ",imageId:", imageId, ",perex:", perex, ",content:", content)
 
     const handleChange = (event) => {
-        const allowed_names = ["title", "imageId", "perex"],
+        const allowed_names = ["title", "perex"],
             name  = event.target.name,
             value = event.target.value
 
@@ -78,27 +85,33 @@ function AdminArticleEdit() {
     if (content || title) {
         pageContent = (
             <form onSubmit={handleSubmit}>
+
                 <div className="d-flex justify-content-start align-items-center mb-3">
                     <p className="h1 mr-4 mb-0">Edit article </p>
                     <button type="submit" className="btn btn-primary" >Save changes</button>
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="title">Article Title</label>
                     <input type="text" className="form-control" name="title" value={title || ""} onChange={handleChange}/>
                 </div>
-                <div className="form-group d-none">
-                    <label htmlFor="imageId">URL of featured image</label>
-                    <input type="text" className="form-control" name="imageId" value={imageId || ""} onChange={handleChange}/>
+
+                <div className="form-group my-4">
+                    <label htmlFor="imageId">Feature image (old picture will remain unless you upload a new one)</label>
+                    <br/>
+                    <ImageUpload setImageId={setImageId}/>
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="perex">Perex</label>
                     <input type="text" className="form-control"  placeholder="Summarize content of your article" name="perex" value={perex} onChange={handleChange}/>
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="content">Content</label>
-                    {/* <textarea className="form-control" id="exampleFormControlTextarea1" rows="10" name="content" value={content || ""} onChange={handleChange}></textarea> */}
                     <MEDitor height={200} value={content} name="content" onChange={setContent} style={{overflow: "none"}}/>
                 </div>
+                <a href="https://commonmark.org/help/" target="_blank" rel="noreferrer">Learn Markdown here</a>
             </form>
         )
     }

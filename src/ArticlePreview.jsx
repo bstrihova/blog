@@ -27,7 +27,7 @@ function ArticlePreview({id}) {
     if (article.content && article.comments) {
         content = (
             <div className="articlePreview my-4">
-                <img src="http://placedog.net/1000" style={{objectFit: "cover"}} alt="cat" className="articlePreview__img"/>
+                <img src="http://placedog.net/1000" style={{objectFit: "cover"}} alt="dog" className="articlePreview__img"/>
                 <div className="articlePreview__detail">
                     <h2>{article.title}</h2>
                     <p className="articlePreview__detail__rowInfo">

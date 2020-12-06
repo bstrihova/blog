@@ -4,6 +4,7 @@ import Comment from "./Comment"
 import RelatedArticlePreview from "./RelatedArticlePreview"
 import moment from "moment"
 import MDEditor from '@uiw/react-md-editor';
+// import axios from "axios";
 
 function Article() {
     let { id } = useParams();
@@ -39,7 +40,8 @@ function Article() {
                         <p className="my-4 text-secondary">
                             barastrihova • {moment(article.createdAt).format("DD.MM.YYYY")}
                         </p>
-                        <img src="http://placedog.net/1000" className="w-100" alt="kitten"/>
+                        {/* couldn't get the image url, so I am hardcoding cute dog pictures instead :) */}
+                        <img src="http://placedog.net/1000" alt="dog" className="w-100" alt={article.title}/>
 
                         <div className="my-4">
                             <MDEditor.Markdown source={article.content}/>
