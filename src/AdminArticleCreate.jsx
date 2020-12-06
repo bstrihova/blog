@@ -73,7 +73,11 @@ function AdminArticleCreate() {
                 <input type="text" className="form-control" placeholder="A creative title of your article" name="title" value={title} onChange={handleChange}/>
             </div>
 
-            <ImageUpload setImageId={setImageId}/>
+            <div className="form-group my-4">
+                <label htmlFor="imageId">Feature image</label>
+                <br/>
+                <ImageUpload setImageId={setImageId}/>
+            </div>
 
             <div className="form-group">
                 <label htmlFor="perex">Perex</label>
@@ -82,7 +86,6 @@ function AdminArticleCreate() {
 
             <div className="form-group">
                 <label htmlFor="content">Content</label>
-                {/* <textarea className="form-control" rows="10" name="content" placeholder="Supports markdown. Yay!" value={content} onChange={handleChange}></textarea> */}
                 <MEDitor height={200} value={content} name="content" onChange={setContent} />
             </div>
             <a href="https://commonmark.org/help/" target="_blank" rel="noreferrer">Learn Markdown here</a>
