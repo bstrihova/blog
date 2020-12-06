@@ -9,7 +9,6 @@ function Login() {
     })
 
     const history = useHistory();
-    // console.log(process.env.REACT_APP_WEATHER_API_KEY)
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -25,7 +24,7 @@ function Login() {
             }
         });
         const data = await response.json();
-        console.log(data);
+        
          // save user info in local storage
          // I am not entirely sure about the security of this solution...if I could make my own API then I would store this info there and just fetch the data whenever needed with context....
         data && data.access_token && localStorage.setItem("access_token", data.access_token);

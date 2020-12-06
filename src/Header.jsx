@@ -7,9 +7,6 @@ function Header() {
         console.log("u've been logged out");
     }
 
-    console.log(localStorage.getItem("access_token"));
-    console.log(localStorage.getItem("user"));
-
     let user = localStorage.getItem('user');
 
 
@@ -18,8 +15,8 @@ function Header() {
         rightMenu = (
             <ul className="navbar-nav d-flex align-items-center">
                 <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="http://placedog.net/131/131" width="40" className="rounded-circle"/>
+                    <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="http://placedog.net/131/131" width="40" className="rounded-circle" alt="logged in user profile"/>
                     </a>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a className="dropdown-item" href="/" onClick={logout} style={{color: "red"}}>Logout</a>

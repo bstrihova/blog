@@ -3,6 +3,8 @@ import moment from 'moment-timezone';
 
 function Comment({article}) {
 
+
+
     const [{content, articleId, author}, setValues] = useState({
         content: "",
         articleId: article.articleId,
@@ -49,6 +51,26 @@ function Comment({article}) {
 
     let commentSectionContent = "";
 
+    const vote = async (id, updown) => {
+                
+        const response = await fetch(`https://fullstack.exercise.applifting.cz/comments/${id}/vote/${updown}`, {
+            method: 'POST',
+            headers: {
+                "Authorization": localStorage.getItem('access_token'),
+                "X-API-KEY": process.env.REACT_APP_X_API_KEY
+            }
+        });
+
+
+        // comment updownvoted
+        if (response.status === 200) {
+            window.location.reload();
+        }
+
+        // it seems like one user can downvote/upvote only once :-) but I can't test it since I am not sure how to register as another user with same API key...
+        
+    }
+
     if (article.comments) {
         commentSectionContent = (
             <div className="card card-comments mt-3 wow fadeIn border-0">
@@ -88,9 +110,9 @@ function Comment({article}) {
                                 </div>
                                 <p>{comment.content}</p>
                                 <div className="d-flex">
-                                    <span className="border-right px-2 mr-1">+3</span>
-                                    <span className="border-right px-2 mr-1">↑</span>
-                                    <span className="border-right px-2">↓</span>
+                                    <span className="border-right px-2 mr-1">{comment.score}</span>
+                                    <span className="border-right px-2 mr-1" onClick={()=> {vote(comment.commentId,"up")}}>↑</span>
+                                    <span className="border-right px-2" onClick={()=> {vote(comment.commentId,"down")}}>↓</span>
                                 </div>
                             </div>
                         </div>
