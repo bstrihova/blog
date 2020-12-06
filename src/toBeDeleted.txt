@@ -1,0 +1,26 @@
+{tenantId: "026c5079-e73d-496b-bb91-b5b5dff0b994", apiKey: "b6948030-1186-408e-8870-4846d247b831", name: "barastrihova", createdAt: "2020-12-02T13:22:16.8682764Z", lastUsedAt: null}
+apiKey: "b6948030-1186-408e-8870-4846d247b831"
+createdAt: "2020-12-02T13:22:16.8682764Z"
+lastUsedAt: null
+name: "barastrihova"
+tenantId: "026c5079-e73d-496b-bb91-b5b5dff0b994"
+__proto__: Object
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  let request_data = {name, password};
+  const response = await fetch('https://fullstack.exercise.applifting.cz/tenants', {
+      method: 'POST',
+      body: JSON.stringify(request_data),
+      headers: {
+          'Accept': 'application/json',
+          'Content-type': 'application/json',
+          // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          // 'X-XSRF-TOKEN': CookieCsrf()
+      }
+  });
+  const response_data = await response.json();
+
+  console.log(response_data);
+  console.log(response);}}
